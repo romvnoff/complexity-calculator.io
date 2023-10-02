@@ -12,6 +12,7 @@ const complexityRanges = [
     { min: 50, max: 70, text: 'Moderate' },
     { min: 70, max: 85, text: 'Difficult' },
     { min: 85, max: 100, text: 'Very Difficult' },
+    { min: 100, max: 1000, text: 'hide in a corner and cry' },
 ];
 
 // Function to get the complexity text for a given value
@@ -25,6 +26,7 @@ function getComplexityText(value) {
             'Moderate': 'moderate-color',
             'Difficult': 'difficult-color',
             'Very Difficult': 'very-difficult-color',
+            'hide in a corner and cry': 'very-difficult-color',
         };
         
         // Return the text with the corresponding CSS class
@@ -33,7 +35,6 @@ function getComplexityText(value) {
         return 'Invalid Score';
     }
 }
-
 
 // JavaScript function to calculate complexity score for "Number of filters"
 function calculateFiltersComplexity(numFilters) {
