@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Complexity Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <h2>Task Complexity Calculator</h2>
+        <form method="POST">
+            <!-- General Information -->
+            <div class="row">
+                <div class="col">
+                    <h4>General Information</h4>
+                    <div class="form-group">
+                        <label for="task_type">Task Type<span class="required-field">*</span></label><span class="info-tooltip" aria-label="More Info" data-tooltip="Select the type of task you are working on."></span>
+                        <select name="task_type" id="task_type" class="form-control" required>
+                            <option value="" disabled selected>— select task type —</option>
+                            <option value="Investigation">Investigation</option>
+                            <option value="Development">Development</option>
+                            <!--<option value="Investigation + Development">Investigation + Development</option>-->
+                        </select>
+                    </div>                                  
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="merchant">Merchant</label>
+                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select type of the merchant and, if needed, enter merchant's name and size."></span>
+                        <div class="input-group">
+                            <input type="text" name="merchant_name" id="merchant_name" class="form-control" placeholder="— select merchant name —" required>
+                            <select name="merchant_type" id="merchant_type" class="form-control" required>
+                                <option value="" disabled selected>— select merchant type —</option>
+                                <option value="Regular">Shippable Purchase</option>
+                                <option value="Cancellation">Cancellation</option>
+                                <option value="FS">Financial Services</option>
+                                <option value="Meal">Meal</option>
+                                <option value="Taxi">Taxi</option>
+                                <option value="Cruise">Cruise</option>
+                                <option value="Car Rental">Car Rental</option>
+                                <option value="TE">Travel & Entertainment</option>
+                            </select>
+                            <input type="number" name="merchant_size" id="merchant_size" class="form-control" placeholder="— enter merchant size [business objects] —" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complexity Factors and Additional Information -->
+            <div class="row">
+                <div class="col">
+                    <div class="row" id="investigation-section">
+                        <div class="col">
+                            <h4>Investigation</h4>
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Complexity Factors</h5>
+                                    <div class="form-group">
+                                        <label for="request_type_investigation">Issue to investigate<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select one or multiple issues to be investigated according to your task."></span>
+                                        <div id="request_type_investigation" class="container">
+                                            <ul class="ks-cboxtags">
+                                                <li><input type="checkbox" id="checkbox1" value="trend_inconsistency"><label for="checkbox1">Trend Inconsistency</label></li>
+                                                <li><input type="checkbox" id="checkbox2" value="data_enrichment"><label for="checkbox2">Data Enrichment</label></li>
+                                                <li><input type="checkbox" id="checkbox3" value="new_receipt_type"><label for="checkbox3">New Receipt Type</label></li>
+                                                <li><input type="checkbox" id="checkbox4" value="incorrect_data_extraction"><label for="checkbox4">Incorrect Data Extraction</label></li>
+                                                <li><input type="checkbox" id="checkbox5" value="dq_issue"><label for="checkbox5">DQ Issue</label></li>
+                                                <li><input type="checkbox" id="checkbox6" value="parsing_issue"><label for="checkbox6">Parsing Issue</label></li>
+                                                <li><input type="checkbox" id="checkbox7" value="high_template_complexity"><label for="checkbox7">High Template Complexity</label></li>
+                                                <!-- <li><input type="checkbox" id="checkbox8" value="traffic_research"><label for="checkbox8">Traffic Research</label></li> -->
+                                            </ul>  
+                                        </div>                              
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Period being investigated field -->
+                                        <label for="period_start">Period being investigated<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select the start and end years for the investigation period."></span>
+                                        <div class="input-group">
+                                            <select name="period_start" id="period_start" class="form-control" required>
+                                                <option value="" disabled selected>— select start year —</option>
+                                            </select>
+                                            <select name="period_end" id="period_end" class="form-control" required>
+                                                <option value="" disabled selected>— select end year —</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Number of filters/templates being investigated field -->
+                                        <label for="num_filters_investigated">Number of filters and templates being investigated:</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the number of filters and templates you are investigating."></span>
+                                        <div class="input-group">
+                                            <input type="number" name="num_filters_investigated" id="num_filters_investigated" class="form-control" min="0" required placeholder="— enter filter count —">
+                                            <input type="number" name="num_templates_investigated" id="num_templates_investigated" class="form-control" min="0" required placeholder="— enter template count —">
+                                        </div>
+                                    </div>
+                                    <!-- NOT NEEDED AT THE MOMENT
+                                    <div class="form-group">
+                                        <label for="additional_investigation_actions">Additional Actions Required</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Tooltip Text"></span>
+                                        <div class="input-group">
+                                            <select name="additional_investigation_actions" id="additional_investigation_actions" class="form-control" required>
+                                                <option value="" disabled selected>— select complexity of additional actions —</option>
+                                                <option value="inv_low_complexity">mild // e.g., you got multitemplates to investigate</option>
+                                                <option value="inv_medium_complexity">medium // e.g., you had to use procedures to collect data on OLTP...</option>
+                                                <option value="inv_high_complexity">difficult // e.g., you had to investigate complex traffic}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                                <div class="col">
+                                    <h5>Additional Information</h5>
+                                    <div class="form-group">
+                                        <!-- Investigation State field -->
+                                        <label for="investigation-state">Investigation state<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select the current state of the investigation"></span>
+                                        <select name="investigation-state" id="investigation-state" class="form-control" required>
+                                            <option value="" disabled selected>— select current state —</option>
+                                            <option value="in_progress">In Progress</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="eta-investigation-container">
+                                        <!-- ETA field for Investigation -->
+                                        <label for="eta_investigation">ETA for investigation<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the ETA for the investigation"></span>
+                                        <input type="date" name="eta_investigation" id="eta_investigation" class="form-control" required>
+                                    </div>
+                                    <div class="form-group" id="development-time-container">
+                                        <!-- Days needed for Development field -->
+                                        <label for="eta_investigation">Estimated development time</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the estimated development time in business days required for the development"></span>
+                                        <input type="number" name="development_time" id="development_time" class="form-control" min="0" required placeholder="— enter estimated development time in business days —">
+                                    </div>
+                                    <div class="form-group" id="comment-investigation-container">
+                                        <!-- Comment field for Investigation -->
+                                        <label for="comment_investigation">Investigation summary<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter findings and  conclusions reached during the investigation."></span>
+                                        <textarea name="comment_investigation" id="comment_investigation" class="form-control" placeholder="— enter investigation results —" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Additional Comment field for Investigation -->
+                                        <label for="additional_comment_investigation">Additional comments</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter any additional comments that may be relevant"></span>
+                                        <textarea name="additional_comment_investigation" id="additional_comment_investigation" class="form-control" placeholder="— enter more details if needed —" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="development-section">
+                        <div class="col">
+                            <h4>Development</h4>
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Complexity Factors</h5>
+                                    <div class="form-group">
+                                        <!-- Period of Development field -->
+                                        <label for="request_type_development">Development actions<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select one or multiple development actions being performed during development."></span>
+                                        <div class="form-group">
+                                            <div id="request_type_development" class="container">
+                                                <ul class="ks-cboxtags">
+                                                  <li><input type="checkbox" id="checkboxOne" value="New Template"><label for="checkboxOne">New Template</label></li>
+                                                  <li><input type="checkbox" id="checkboxTwo" value="Template Fix"><label for="checkboxTwo">Template Fix</label></li>
+                                                  <li><input type="checkbox" id="checkboxThree" value="Template Enrichment"><label for="checkboxThree">Template Enrichment</label></li>
+                                                  <li><input type="checkbox" id="checkboxFour" value="New Filter"><label for="checkboxFour">New Filter</label></li>
+                                                  <li><input type="checkbox" id="checkboxFive" value="Filter Modification"><label for="checkboxFive">Filter Modification</label></li>
+                                                  <li><input type="checkbox" id="checkboxSix" value="Refactoring"><label for="checkboxSix">Refactoring</label></li>
+                                                  <li><input type="checkbox" id="checkboxSeven" value="Refactoring"><label for="checkboxSeven">Refactoring</label></li>
+                                                  <li><input type="checkbox" id="checkboxEight" value="DQR"><label for="checkboxEight">DQR</label></li>
+                                                  <li><input type="checkbox" id="checkboxNine" value="New Attribute"><label for="checkboxNine">New Attribute</label></li>
+                                                  <li><input type="checkbox" id="checkboxTen" value="SQL Procedure"><label for="checkboxTen">SQL Procedure</label></li>
+                                                  <li><input type="checkbox" id="checkboxEleven" value="Custom Visualisation"><label for="checkboxEleven">Custom Visualisation</label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="necessity_of_dqr_container">
+                                        <label for="necessity_of_dqr">Data quality repair</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select how the DQR is being performed"></span>
+                                        <select name="necessity_of_dqr" id="necessity_of_dqr" class="form-control" required>
+                                            <option value="" disabled selected>— select DQR type —</option>
+                                            <option value="DQ Reparsing">DQ Reparsing</option>
+                                            <option value="DQ Update">DQ Update</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Period of Development field -->
+                                        <label for="period_of_development_start">Period affected by development<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the period being covered by development"></span>
+                                        <div class="input-group">
+                                            <select name="period_of_development_start" id="period_of_development_start" class="form-control" required>
+                                                <option value="" disabled selected>— select start year —</option>
+                                            </select>
+                                            <select name="period_of_development_end" id="period_of_development_end" class="form-control" required>
+                                                <option value="" disabled selected>— select end year —</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- Number of filters being modified field -->
+                                        <label for="num_filters_modified">Number of filters and templates being modified</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the number of filters and templates being modified."></span>
+                                        <div class="input-group">
+                                            <input type="number" name="num_filters_modified" id="num_filters_modified" class="form-control" min="0" required placeholder="— enter filter count —">
+                                            <input type="number" name="num_templates_modified" id="num_templates_modified" class="form-control" min="0" required placeholder="— enter template count —">
+                                        </div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label for="num_templates_modified">Number of business objects being modified</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter the number of business objects being modified and select the receipts format."></span>
+                                        <div class="input-group">
+                                            <input type="number" name="num_receipts_modified" id="num_receipts_modified" class="form-control" placeholder="— enter receipts count —" required>
+                                            <select name="template_type_modified" id="template_type_modified" class="form-control" required>
+                                                <option value="" disabled selected>— select format of receipts —</option>
+                                                <option value="html/txt">html/txt</option>
+                                                <option value="pdf">pdf</option>
+                                                <option value="html/txt + pdf">html/txt + pdf</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- NOT NEEDED AT THE MOMENT
+                                    <div class="form-group">
+                                        <label for="additional_development_actions">Additional Actions Required</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Tooltip Text"></span>
+                                        <div class="input-group">
+                                            <select name="additional_development_actions" id="additional_development_actions" class="form-control" required>
+                                                <option value="" disabled selected>— select complexity of additional actions —</option>
+                                                <option value="dev_low_complexity">mild 😑, e.g., you got to work with shitty templates}</option>
+                                                <option value="dev_medium_complexity">medium 😫, e.g., you used procedures to collect data on OLTP...}</option>
+                                                <option value="dev_high_complexity">difficult 😭, e.g., you got CASH APP}</option>
+                                            </select>
+                                        </div>
+                                    </div>  
+                                    -->                                  
+                                </div>
+                                <div class="col">
+                                    <h5>Additional Information</h5>
+                                    <div class="form-group">
+                                        <!-- Task State field -->
+                                        <label for="task_state">Development state<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Select the current state of the development"></span>
+                                        <select name="task_state" id="task_state" class="form-control" required>
+                                            <option value="" disabled selected>— select current state —</option>
+                                            <option value="in_progress">In Progress</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="eta-development-container">
+                                        <!-- ETA field for Development -->
+                                        <label for="eta_development">ETA for development<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter ETA for development"></span>
+                                        <input type="date" name="eta_development" id="eta_development" class="form-control" required>
+                                    </div>
+                                    <div class="form-group" id="comment-development-container">
+                                        <!-- Comment field for Development -->
+                                        <label for="comment_development">Development summary<span class="required-field">*</span></label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter a summary of the changes being made during development"></span>
+                                        <textarea name="comment_development" id="comment_development" class="form-control" placeholder="— enter list of changes —" required ></textarea>
+                                    </div> 
+                                    <div class="form-group">
+                                        <!-- Additional Comment field for Development -->
+                                        <label for="comment_investigation">Additional comments</label>
+                                        <span class="info-tooltip" aria-label="More Info" data-tooltip="Enter any additional comments that may be relevant"></span>
+                                        <textarea name="additional_comment_development" id="additional_comment_development" class="form-control" placeholder="— enter more details if needed —" required></textarea>
+                                    </div>                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Inside the Results section -->
+    <div class="result-container">
+        <h4 class="result">Task Score: <span id="task-score">none</span>
+            <span id="task-score-range"></span>
+            <button onclick="copyToClipboard('task-score')" class="btn btn-secondary copy-button">Copy</button>
+        </h4>
+        <h4 class="result">
+            Short Customer Resolution:
+            <button onclick="copyToClipboard('short-customer-resolution')" class="btn btn-secondary copy-button top-right">Copy</button>
+            <div id="short-customer-resolution" class="resolution-text"></div>
+        </h4>
+        <h4 class="result">
+            Long Customer Resolution:
+            <button onclick="copyToClipboard('long-customer-resolution')" class="btn btn-secondary copy-button top-right">Copy</button>
+            <div id="long-customer-resolution" class="resolution-text"></div>
+        </h4>
+
+        <!-- Reset button -->
+        <button type="button" id="reset-button" class="btn btn-danger">Reset Form</button>
+        <a href="https://rakutenintelligence.atlassian.net/wiki/spaces/MTMDIS/pages/3193372880/Task+Complexity+Customer+Resolution+Template" target="_blank" class="btn btn-info how-to">How-To</a>
+
+        <!-- Copy Hash button -->
+        <button type="button" id="copy-hash-button" class="btn btn-primary">Copy Hash</button>
+        
+    </div>
+    <!-- Link to Instruction -->
+
+    <!-- Include the script.js file -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="updateShortCustomerResolution.js"></script>
+    <script src="buttons.js"></script>
+    <script src="updateLongCustomerResolution.js"></script>
+    <script src="calculateComplexityScore.js"></script>
+    <script src="updateResults.js"></script>
+    <script src="eventListeners.js"></script>
+    <script src="toggleFields.js"></script>
+</body>
+</html>
